@@ -23,7 +23,7 @@ class Agent:
 
 
 class Position:
-    """Classe qui représente une zone"""
+    """Classe qui représente une position"""
 
     def __init__(self, latitude_degrees, longitude_degrees):
         self.latitude_degrees = latitude_degrees
@@ -31,10 +31,12 @@ class Position:
 
     @property
     def latitude(self):
+        """Latitude in radians"""
         return self.latitude_degrees * pi / 180
 
     @property
     def longitude(self):
+        """Longitude in radians"""
         return self.longitude_degrees * pi / 180
 
     def __str__(self):
@@ -42,6 +44,10 @@ class Position:
 
     def __repr__(self):
         return {'latitude': self.latitude, 'longitude': self.longitude}.__repr__()
+
+
+class Zone:
+    """Classe qui représente une zone"""
 
 
 def populate(filename):
