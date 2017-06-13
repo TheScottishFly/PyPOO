@@ -3,6 +3,7 @@
 
 from json import load
 from sys import argv
+from math import pi
 
 
 class Agent:
@@ -17,16 +18,30 @@ class Agent:
     def __str__(self):
         return str(self.__dict__)
 
+    def __repr__(self):
+        return str(self.__dict__)
+
 
 class Position:
     """Classe qui représente une zone"""
 
-    def __init__(self, latitude, longitude):
-        self.latitude = latitude
-        self.longitude = longitude
+    def __init__(self, latitude_degrees, longitude_degrees):
+        self.latitude_degrees = latitude_degrees
+        self.longitude_degrees = longitude_degrees
+
+    @property
+    def latitude(self):
+        return self.latitude_degrees * pi / 180
+
+    @property
+    def longitude(self):
+        return self.longitude_degrees * pi / 180
 
     def __str__(self):
         return str(self.__dict__)
+
+    def __repr__(self):
+        return {'latitude': self.latitude, 'longitude': self.longitude}.__repr__()
 
 
 def populate(filename):
@@ -35,7 +50,6 @@ def populate(filename):
 
         position = Position(datas[0].pop('latitude'), datas[0].pop('longitude'))
         first_agent = Agent(position, datas[0])
-        print(position)
         print(first_agent)
 
 if __name__ == '__main__':
