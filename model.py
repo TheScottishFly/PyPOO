@@ -8,7 +8,9 @@ from sys import argv
 class Agent:
     """Classe qui représente une personne"""
 
-    def __init__(self, attributes_from_dict):
+    def __init__(self, position, attributes_from_dict):
+        self.position = position
+
         for key, value in attributes_from_dict.items():
             self.__setattr__(key, value)
 
@@ -32,7 +34,7 @@ def populate(filename):
         datas = load(json_file)
 
         position = Position(datas[0].pop('latitude'), datas[0].pop('longitude'))
-        first_agent = Agent(datas[0])
+        first_agent = Agent(position, datas[0])
         print(position)
         print(first_agent)
 
