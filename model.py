@@ -61,7 +61,7 @@ class Zone:
     def __init__(self, corner_bottom_left, corner_top_right):
         self.corner_bottom_left = corner_bottom_left
         self.corner_top_right = corner_top_right
-        self.population = 0
+        self.inhabitants = list()
 
     @classmethod
     def create(cls):
@@ -74,15 +74,39 @@ class Zone:
                 cls.ZONES.append(Zone(corner_bottom_left, corner_top_right))
         print(len(cls.ZONES))
 
+    def contains(self, position):
+        return min(self.corner_bottom_left.longitude, self.corner_top_right.longitude) <= position.longitude < \
+               max(self.corner_bottom_left.longitude, self.corner_top_right.longitude) and \
+               min(self.corner_bottom_left.latitude, self.corner_top_right.latitude) <= position.latitude < \
+               max(self.corner_bottom_left.latitude, self.corner_top_right.latitude)
+
+    @classmethod
+    def find_zone_that_contains(cls, position):
+        longitude_index = int((position.longitude_degrees - cls.MIN_LONGITUDE_DEGREES) / cls.WIDTH_DEGREES)
+        latitude_index = int((position.latitude_degrees - cls.MIN_LATITUDE_DEGREES) / cls.HEIGHT_DEGREES)
+        longitude_bins = int((cls.MAX_LONGITUDE_DEGREES - cls.MIN_LONGITUDE_DEGREES) / cls.WIDTH_DEGREES)
+        zone_index = latitude_index * longitude_bins + longitude_index
+        zone = cls.ZONES[zone_index]
+        return zone
+
+    def add_inhabitant(self, inhabitant):
+        self.inhabitants.append(inhabitant)
+
+    @property
+    def population(self):
+        return len(self.inhabitants)
+
 
 def populate(filename):
     with open(filename, 'r') as json_file:
         datas = load(json_file)
-
-        position = Position(datas[0].pop('latitude'), datas[0].pop('longitude'))
-        first_agent = Agent(position, datas[0])
-        print(first_agent)
+        for person in datas:
+            position = Position(person.pop('latitude'), person.pop('longitude'))
+            agent = Agent(position, person)
+            zone = Zone.find_zone_that_contains(position)
+            zone.add_inhabitant(agent)
+            print('Population de la zone : {}'.format(zone.population))
 
 if __name__ == '__main__':
-    populate(argv[1])
     Zone.create()
+    populate(argv[1])
