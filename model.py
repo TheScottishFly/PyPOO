@@ -51,6 +51,7 @@ class Zone:
 
     ZONES = list()
 
+    EARTH_RADIUS_KILOMETERS = 6371
     MIN_LONGITUDE_DEGREES = -180
     MAX_LONGITUDE_DEGREES = 180
     MIN_LATITUDE_DEGREES = -90
@@ -97,6 +98,26 @@ class Zone:
     @property
     def population(self):
         return len(self.inhabitants)
+
+    @property
+    def width(self):
+        return abs(self.corner_bottom_left.longitude - self.corner_top_right.longitude) * self.EARTH_RADIUS_KILOMETERS
+
+    @property
+    def height(self):
+        return abs(self.corner_bottom_left.latitude - self.corner_top_right.latitude) * self.EARTH_RADIUS_KILOMETERS
+
+    @property
+    def area(self):
+        return self.height * self.width
+
+    def population_density(self):
+        return self.population / self.area
+
+    def average_agreeableness(self):
+        if not self.inhabitants or len(self.inhabitants) == 0:
+            return 0
+        return sum([inhabitant.agreableness for inhabitant in self.inhabitants]) / self.population
 
 
 def populate(filename):
