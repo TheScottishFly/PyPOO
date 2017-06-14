@@ -122,6 +122,10 @@ ENV/
 # Rope project settings
 .ropeproject
 
+# Git folder
+
+.git
+
 Supprimerait .gitignore
 Supprimerait .idea/PyPOO.iml
 Supprimerait .idea/markdown-navigator.xml
