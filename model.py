@@ -64,7 +64,7 @@ class Zone:
         self.inhabitants = list()
 
     @classmethod
-    def create(cls):
+    def _create(cls):
         iter_latitudes = range(cls.MIN_LATITUDE_DEGREES, cls.MAX_LATITUDE_DEGREES, cls.HEIGHT_DEGREES)
         iter_longitude = range(cls.MIN_LONGITUDE_DEGREES, cls.MAX_LONGITUDE_DEGREES, cls.WIDTH_DEGREES)
         for latitude in iter_latitudes:
@@ -82,6 +82,8 @@ class Zone:
 
     @classmethod
     def find_zone_that_contains(cls, position):
+        if not cls.ZONES:
+            cls._create()
         longitude_index = int((position.longitude_degrees - cls.MIN_LONGITUDE_DEGREES) / cls.WIDTH_DEGREES)
         latitude_index = int((position.latitude_degrees - cls.MIN_LATITUDE_DEGREES) / cls.HEIGHT_DEGREES)
         longitude_bins = int((cls.MAX_LONGITUDE_DEGREES - cls.MIN_LONGITUDE_DEGREES) / cls.WIDTH_DEGREES)
@@ -108,5 +110,4 @@ def populate(filename):
             print('Population de la zone : {}'.format(zone.population))
 
 if __name__ == '__main__':
-    Zone.create()
     populate(argv[1])
