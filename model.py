@@ -49,6 +49,31 @@ class Position:
 class Zone:
     """Classe qui représente une zone"""
 
+    ZONES = list()
+
+    MIN_LONGITUDE_DEGREES = -180
+    MAX_LONGITUDE_DEGREES = 180
+    MIN_LATITUDE_DEGREES = -90
+    MAX_LATITUDE_DEGREES = 90
+    WIDTH_DEGREES = 1
+    HEIGHT_DEGREES = 1
+
+    def __init__(self, corner_bottom_left, corner_top_right):
+        self.corner_bottom_left = corner_bottom_left
+        self.corner_top_right = corner_top_right
+        self.population = 0
+
+    @classmethod
+    def create(cls):
+        iter_latitudes = range(cls.MIN_LATITUDE_DEGREES, cls.MAX_LATITUDE_DEGREES, cls.HEIGHT_DEGREES)
+        iter_longitude = range(cls.MIN_LONGITUDE_DEGREES, cls.MAX_LONGITUDE_DEGREES, cls.WIDTH_DEGREES)
+        for latitude in iter_latitudes:
+            for longitude in iter_longitude:
+                corner_bottom_left = Position(longitude, latitude)
+                corner_top_right = Position(longitude + cls.WIDTH_DEGREES, latitude + cls.HEIGHT_DEGREES)
+                cls.ZONES.append(Zone(corner_bottom_left, corner_top_right))
+        print(len(cls.ZONES))
+
 
 def populate(filename):
     with open(filename, 'r') as json_file:
@@ -60,3 +85,4 @@ def populate(filename):
 
 if __name__ == '__main__':
     populate(argv[1])
+    Zone.create()
