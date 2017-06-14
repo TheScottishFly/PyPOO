@@ -131,4 +131,4 @@ def populate(filename):
             print('Population de la zone : {}'.format(zone.population))
 
 if __name__ == '__main__':
-    populate(argv[1])
+    populate(argv[1]) # must be a json file
