@@ -4,6 +4,7 @@
 from json import load
 from sys import argv
 from math import pi
+from graph import *
 
 
 class Agent:
@@ -117,7 +118,7 @@ class Zone:
     def average_agreeableness(self):
         if not self.inhabitants or len(self.inhabitants) == 0:
             return 0
-        return sum([inhabitant.agreableness for inhabitant in self.inhabitants]) / self.population
+        return sum([inhabitant.agreeableness for inhabitant in self.inhabitants]) / self.population
 
 
 def populate(filename):
@@ -128,7 +129,8 @@ def populate(filename):
             agent = Agent(position, person)
             zone = Zone.find_zone_that_contains(position)
             zone.add_inhabitant(agent)
-            print('Population de la zone : {}'.format(zone.population))
+    agreeableness_graph = AgreeablenessGraph()
+    agreeableness_graph.show(Zone.ZONES)
 
 if __name__ == '__main__':
     populate(argv[1]) # must be a json file
