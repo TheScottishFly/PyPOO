@@ -5,8 +5,6 @@
 
 # User-specific stuff:
 .idea
-.idea/*
-.idea/vcs.xml
 
 ## File-based project format:
 *.iws
