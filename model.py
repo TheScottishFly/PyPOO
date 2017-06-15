@@ -1,10 +1,4 @@
-#!/usr/bin/python3.5
-# -*- coding: utf_8 -*-
-
-from json import load
-from sys import argv
 from math import pi
-from graph import *
 
 
 class Agent:
@@ -119,18 +113,3 @@ class Zone:
         if not self.inhabitants or len(self.inhabitants) == 0:
             return 0
         return sum([inhabitant.agreeableness for inhabitant in self.inhabitants]) / self.population
-
-
-def populate(filename):
-    with open(filename, 'r') as json_file:
-        datas = load(json_file)
-        for person in datas:
-            position = Position(person.pop('latitude'), person.pop('longitude'))
-            agent = Agent(position, person)
-            zone = Zone.find_zone_that_contains(position)
-            zone.add_inhabitant(agent)
-    agreeableness_graph = AgreeablenessGraph()
-    agreeableness_graph.show(Zone.ZONES)
-
-if __name__ == '__main__':
-    populate(argv[1]) # must be a json file
